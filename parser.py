@@ -11,6 +11,7 @@ precedence = (
     ('right', 'UPLUS'),
 )
 
+
 def p_statement_list(p):
     '''
     statement_list : statement
@@ -22,6 +23,7 @@ def p_statement_list(p):
         p[1].children.append(p[2])
         p[0] = p[1]
 
+
 def p_statement(p):
     '''
     statement : identifier
@@ -30,17 +32,21 @@ def p_statement(p):
     '''
     p[0] = p[1]
 
+
 def p_identifier(p):
     '''
     identifier : IDENTIFIER
     '''
     p[0] = ast.Identifier(p[1])
 
+
 def p_exit_stmt(p):
     '''
     statement : EXIT STMT_END
     '''
     p[0] = ast.ExitStatement()
+
+
 
 def p_primitive(p):
     '''
@@ -70,6 +76,7 @@ def p_binary_op(p):
     '''
     p[0] = ast.BinaryOperation(p[1], p[3], p[2])
 
+
 def p_boolean_operators(p):
     '''
     boolean : expression EQ expression
@@ -83,6 +90,8 @@ def p_boolean_operators(p):
     '''
     p[0] = ast.BinaryOperation(p[1], p[3], p[2])
 
+
+
 def p_unary_operation(p):
     '''
     expression : MINUS expression %prec UMINUS
@@ -92,11 +101,15 @@ def p_unary_operation(p):
     '''
     p[0] = ast.UnaryOperation(p[1], p[2])
 
+
+
 def p_paren(p):
     '''
     expression : LPAREN expression RPAREN
     '''
     p[0] = p[2] if isinstance(p[2], ast.BaseExpression) else ast.Primitive(p[2])
+
+
 
 def p_boolean(p):
     '''
@@ -105,12 +118,15 @@ def p_boolean(p):
     '''
     p[0] = ast.Primitive(p[1])
 
+
 def p_assignable(p):
     '''
     assignable : primitive
                | expression
     '''
     p[0] = p[1]
+
+
 
 def p_comma_separated_expr(p):
     '''
@@ -126,8 +142,40 @@ def p_comma_separated_expr(p):
         p[1].children.append(p[3])
         p[0] = p[1]
 
+
 def p_array_access_assign(p):
     '''
     statement : identifier LSQBRACK expression RSQBRACK EQUALS expression STMT_END
     '''
     p[0] = ast.ArrayAssign(p[1], p[3], p[6])
+
+
+
+def p_assign(p):
+    '''
+    expression : identifier EQUALS assignable STMT_END
+    '''
+    p[0] = ast.Assignment(p[1], p[3])
+
+
+
+def p_ifstatement(p):
+    '''
+    if_statement : IF expression LBRACK statement_list RBRACK
+    '''
+    p[0] = ast.If(p[2], p[4])
+
+
+
+def p_ifstatement_else(p):
+    '''
+    if_statement : IF expression LBRACK statement_list RBRACK ELSE LBRACK statement_list RBRACK
+    '''
+    p[0] = ast.If(p[2], p[4], p[8])
+
+    
+def p_ifstatement_else_if(p):
+    '''
+    if_statement : IF expression LBRACK statement_list RBRACK ELSE if_statement
+    '''
+    p[0] = ast.If(p[2], p[4], p[7])
