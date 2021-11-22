@@ -53,3 +53,33 @@ def p_primitive(p):
         p[0] = p[1]
     else:
         p[0] = ast.Primitive(p[1])
+ 
+def p_binary_op(p):
+    '''
+    expression : expression PLUS expression %prec PLUS
+            | expression MINUS expression %prec MINUS
+            | expression MUL expression %prec MUL
+            | expression DIV expression %prec DIV
+            | expression EXP expression %prec EXP
+            | expression MOD expression %prec MOD
+            | expression BIT_AND expression
+            | expression BIT_OR expression
+            | expression BIT_XOR expression
+            | expression LSHIFT expression
+            | expression RSHIFT expression
+    '''
+    p[0] = ast.BinaryOperation(p[1], p[3], p[2])
+
+
+def p_boolean_operators(p):
+    '''
+    boolean : expression EQ expression
+            | expression NEQ expression
+            | expression GT expression
+            | expression GTE expression
+            | expression LT expression
+            | expression LTE expression
+            | expression AND expression
+            | expression OR expression
+    '''
+    p[0] = ast.BinaryOperation(p[1], p[3], p[2])
