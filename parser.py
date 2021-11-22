@@ -69,8 +69,7 @@ def p_binary_op(p):
             | expression RSHIFT expression
     '''
     p[0] = ast.BinaryOperation(p[1], p[3], p[2])
-
-
+    
 def p_boolean_operators(p):
     '''
     boolean : expression EQ expression
@@ -83,3 +82,25 @@ def p_boolean_operators(p):
             | expression OR expression
     '''
     p[0] = ast.BinaryOperation(p[1], p[3], p[2])
+
+def p_unary_operation(p):
+    '''
+    expression : MINUS expression %prec UMINUS
+               | PLUS expression %prec UPLUS
+               | BIT_NEG expression
+               | NOT expression
+    '''
+    p[0] = ast.UnaryOperation(p[1], p[2])
+
+def p_paren(p):
+    '''
+    expression : LPAREN expression RPAREN
+    '''
+    p[0] = p[2] if isinstance(p[2], ast.BaseExpression) else ast.Primitive(p[2])
+
+def p_boolean(p):
+    '''
+    boolean : TRUE
+            | FALSE
+    '''
+    p[0] = ast.Primitive(p[1])
