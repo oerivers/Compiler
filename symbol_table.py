@@ -41,3 +41,4 @@ class SymbolTable:
             raise DuplicateSymbol("Function cannot be declared '%s'" % name)
 
         self.__table[self.__func][name] = val
+
