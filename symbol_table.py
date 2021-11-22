@@ -8,7 +8,7 @@ class SymbolTable:
     __table = {
         __func: {},__sym: {},__local: []
     }
-
+    
     def __is_local(self):
         return len(self.__table[self.__local]) > 0
 
@@ -22,9 +22,15 @@ class SymbolTable:
             return self.__table[self.__sym][sym]
 
         raise SymbolNotFound("Undefined variable '%s'" % sym)
-
+    
     def set_sym(self, sym, val):
         if self.__is_local():
             self.get_local_table()[sym] = val
         else:
             self.__table[self.__sym][sym] = val
+
+    def get_func(self, name):
+        if name in self.__table[self.__func]:
+            return self.__table[self.__func][name]
+
+        raise SymbolNotFound("Function is Undefined '%s'" % name)
