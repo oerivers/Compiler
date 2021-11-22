@@ -22,3 +22,9 @@ class SymbolTable:
             return self.__table[self.__sym][sym]
 
         raise SymbolNotFound("Undefined variable '%s'" % sym)
+
+    def set_sym(self, sym, val):
+        if self.__is_local():
+            self.get_local_table()[sym] = val
+        else:
+            self.__table[self.__sym][sym] = val
