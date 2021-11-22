@@ -21,7 +21,7 @@ class SymbolTable:
         if sym in self.__table[self.__sym]:
             return self.__table[self.__sym][sym]
 
-        raise SymbolNotFound("Undefined variable '%s'" % sym)
+        raise SymbolNotFound("Variable is not defined '%s'" % sym)
   
     def set_sym(self, sym, val):
         if self.__is_local():
@@ -33,7 +33,7 @@ class SymbolTable:
         if name in self.__table[self.__func]:
             return self.__table[self.__func][name]
        
-        raise SymbolNotFound("Undefined function '%s'" % name)
+        raise SymbolNotFound("Function is undefined '%s'" % name)
 
     def set_func(self, name, val):
         if name in self.__table[self.__func]:
