@@ -211,3 +211,38 @@ def p_increment_decrement_identifiers(p):
         p[0] = ast.BinaryOperation(p[1], ast.Primitive(1), '+')
     else:
         p[0] = ast.BinaryOperation(p[1], ast.Primitive(1), '-')
+
+
+
+def p_expression(p):
+    '''
+    expression : primitive
+               | STRING
+               | identifier
+    '''
+    p[0] = p[1]
+
+
+def p_while_loop(p):
+    '''
+    statement : WHILE expression LBRACK statement_list RBRACK
+    '''
+    p[0] = ast.While(p[2], p[4])
+
+
+
+def p_for_loop_infinite(p):
+    '''
+    statement : FOR LBRACK statement_list RBRACK
+    '''
+    p[0] = ast.While(ast.Primitive(True), p[3])
+
+def p_error(p):
+    if p is not None:
+        raise ParserSyntaxError("Syntax error at line %d, illegal token '%s' found" % (p.lineno, p.value))
+
+    raise ParserSyntaxError("Unexpected end of input")
+
+
+def get_parser():
+    return yacc.yacc(errorlog=yacc.NullLogger()) if disable_warnings else yacc.yacc()
