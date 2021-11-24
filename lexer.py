@@ -85,3 +85,17 @@ def t_NUM_INT(t):
     r'\d+'
     t.value = int(t.value)
     return t
+
+
+def t_STRING(t):
+    r'"(?:\\"|.)*?"'
+
+    t.value = bytes(t.value.lstrip('"').rstrip('"'), "utf-8").decode("unicode_escape")
+    return t
+
+
+def t_error(t):
+    raise comp_final.exceptions.UnexpectedCharacter("Unexpected character '%s' at line %d" % (t.value[0], t.lineno))
+
+
+lexer = lex.lex()
