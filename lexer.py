@@ -59,3 +59,17 @@ def t_TRUE(t):
     'true'
     t.value = True
     return t
+
+
+def t_FALSE(t):
+    'false'
+    t.value = False
+    return t
+
+
+def t_IDENTIFIER(t):
+    r'[\$_a-zA-Z]\w*'
+
+    t.type = reserved.get(t.value, t.type)
+
+    return t
