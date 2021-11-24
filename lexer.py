@@ -73,3 +73,9 @@ def t_IDENTIFIER(t):
     t.type = reserved.get(t.value, t.type)
 
     return t
+
+
+def t_NUM_FLOAT(t):
+    r'\d*\.\d+'
+    t.value = float(t.value)
+    return t
