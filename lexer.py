@@ -1,5 +1,3 @@
-import ply.lex as lex
-
 reserved = {
     'if': 'IF',
     'else': 'ELSE',
@@ -53,3 +51,9 @@ def t_NEWLINE(t):
     t.lexer.lineno += 1
     t.lexer.linepos = 0
     pass
+
+
+def t_TRUE(t):
+    'true'
+    t.value = True
+    return t
