@@ -46,3 +46,10 @@ t_GT = '>'
 t_GTE = '>='
 t_LT = '<'
 t_LTE = '<='
+
+
+def t_NEWLINE(t):
+    r'\n'
+    t.lexer.lineno += 1
+    t.lexer.linepos = 0
+    pass
