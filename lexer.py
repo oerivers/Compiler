@@ -1,3 +1,5 @@
+import ply.lex as lex
+
 reserved = {
     'if': 'IF',
     'else': 'ELSE',
