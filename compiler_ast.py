@@ -72,7 +72,7 @@ class Identifier(BaseExpression):
             symbols.set_func(self.name, val)
         else:
             symbols.set_sym(self.name, val)
-    # need
+    
     def eval(self):
         if self.is_function:
             return symbols.get_func(self.name)
