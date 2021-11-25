@@ -44,3 +44,14 @@ class ExitStatement(BaseExpression):
 
     def eval(self):
         pass
+
+
+class Primitive(BaseExpression):
+    def __init__(self, value):
+        self.value = value
+
+    def __repr__(self):
+        return '<Primitive "{0}"({1})>'.format(self.value, self.value.__class__)
+
+    def eval(self):
+        return self.value
