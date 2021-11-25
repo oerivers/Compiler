@@ -72,7 +72,7 @@ class Identifier(BaseExpression):
             symbols.set_func(self.name, val)
         else:
             symbols.set_sym(self.name, val)
-   
+    # need
     def eval(self):
         if self.is_function:
             return symbols.get_func(self.name)
@@ -88,7 +88,7 @@ class Assignment(BaseExpression):
     def __repr__(self):
         return '<Assignment sym={0}; val={1}>'.format(self.identifier, self.val)
 
-  
+    # first call after finishing the enviroment file
     def eval(self):
         if self.identifier.is_function:
             self.identifier.assign(self.val)
@@ -215,3 +215,63 @@ class PrintStatement(BaseExpression):
 
     def eval(self):
         print(*self.items.eval(), end='', sep='')
+
+
+class FunctionCall(BaseExpression):
+    def __init__(self, name: Identifier, params: InstructionList):
+        self.name = name
+        self.params = params
+
+    def __repr__(self):
+        return '<Function call name={0} params={1}>'.format(self.name, self.params)
+
+    def __eval_builtin_func(self):
+        func = self.name.eval()
+        args = []
+        return func.eval(args)
+
+    def __eval_udf(self):
+        func = self.name.eval()
+        args = {}
+        return func.eval(args)
+
+    def eval(self):
+        if isinstance(self.name.eval(), BuiltInFunction):
+            return self.__eval_builtin_func()
+
+        return self.__eval_udf()
+
+
+class Function(BaseExpression):
+    def __init__(self, params: InstructionList, body: InstructionList):
+        self.params = params
+        self.body = body
+
+    def __repr__(self):
+        return '<Function params={0} body={1}>'.format(self.params, self.body)
+
+
+    def eval(self, args):
+        symbols.set_local(True)
+
+        for k, v in args.items():
+            symbols.set_sym(k, v)
+
+        try:
+            ret = self.body.eval()
+
+        finally:
+            symbols.set_local(False)
+
+        return None
+
+
+class BuiltInFunction(BaseExpression):
+    def __init__(self, func):
+        self.func = func
+
+    def __repr__(self):
+        return '<Builtin function {0}>'.format(self.func)
+
+    def eval(self, args):
+        return self.func(*args)
