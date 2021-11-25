@@ -36,3 +36,11 @@ class InstructionList:
 class BaseExpression:
     def eval(self):
         raise NotImplementedError()
+
+
+class ExitStatement(BaseExpression):
+    def __iter__(self):
+        return []
+
+    def eval(self):
+        pass
