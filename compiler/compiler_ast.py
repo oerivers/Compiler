@@ -1,5 +1,7 @@
 import operator
 from types import LambdaType
+from compiler.exceptions import *
+import compiler.symbol_table
 
 class InstructionList:
     def __init__(self, children=None):
