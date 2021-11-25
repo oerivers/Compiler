@@ -81,3 +81,4 @@ _lr_productions = [
   ('expression -> identifier','expression',1,'p_expression','parser.py',227),
   ('statement -> WHILE expression LBRACK statement_list RBRACK','statement',5,'p_while_loop','parser.py',234),
   ('statement -> FOR LBRACK statement_list RBRACK','statement',4,'p_for_loop_infinite','parser.py',242),
+]
