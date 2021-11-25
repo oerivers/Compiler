@@ -8,10 +8,10 @@ def execute(source, show_ast: bool=False, disable_warnings: bool=True):
 
     try:
         res = p.get_parser().parse(source)
-        f = comp_ast.BuiltInFunction
-        comp_final.comp_ast.symbols.set_func('int', f(int))
-        comp_final.comp_ast.symbols.set_func('float', f(float))
-        comp_final.comp_ast.symbols.set_func('ask', f(input))
+        f = compiler_ast.BuiltInFunction
+        compiler.compiler_ast.symbols.set_func('int', f(int))
+        compiler.compiler_ast.symbols.set_func('float', f(float))
+        compiler.compiler_ast.symbols.set_func('ask', f(input))
 
         for node in res.children:
             node.eval()
