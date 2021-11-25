@@ -15,3 +15,19 @@ class InstructionList:
 
     def __repr__(self):
         return '<InstructionList {0}>'.format(self.children)
+
+    def eval(self):
+
+        ret = []
+        for n in self:
+            if isinstance(n, ExitStatement):
+                return n
+
+            res = n.eval()
+
+            if isinstance(res, ExitStatement):
+                return res
+            elif res is not None:
+                ret.append(res)
+
+        return ret
