@@ -141,3 +141,52 @@ class BinaryOperation(BaseExpression):
         except TypeError:
             fmt = (left.__class__.__name__, left, self.op, right.__class__.__name__, right)
             raise InterpreterRuntimeError("Unable to apply operation (%s: %s) %s (%s: %s)" % fmt)
+
+
+class UnaryOperation(BaseExpression):
+    __operations = {
+        '+': operator.pos,
+        '-': operator.neg,
+    }
+
+    def __repr__(self):
+        return '<Unary operation: operation={0} expr={1}>'.format(self.operation, self.expr)
+
+    def __init__(self, operation, expr: BaseExpression):
+        self.operation = operation
+        self.expr = expr
+
+    def eval(self):
+        return self.__operations[self.operation](self.expr.eval())
+
+
+class If(BaseExpression):
+    def __init__(self, condition: BaseExpression, truepart: InstructionList, elsepart=None):
+        self.condition = condition
+        self.truepart = truepart
+        self.elsepart = elsepart
+
+    def __repr__(self):
+        return '<If condition={0} then={1} else={2}>'.format(self.condition, self.truepart, self.elsepart)
+
+    def eval(self):
+        if self.condition.eval():
+            return self.truepart.eval()
+        elif self.elsepart is not None:
+            return self.elsepart.eval()
+
+
+class ForIn(BaseExpression):
+    def __init__(self, variable: Identifier, sequence: BaseExpression, body: InstructionList):
+        self.variable = variable
+        self.sequence = sequence
+        self.body = body
+
+    def __repr__(self):
+        return '<ForIn var={0} in iterable={1} do body={2}>'.format(self.variable, self.sequence, self.body)
+
+    def eval(self):
+        for i in self.sequence.eval():
+            self.variable.assign(i)
+            if isinstance(self.body.eval(), ExitStatement):
+                break
