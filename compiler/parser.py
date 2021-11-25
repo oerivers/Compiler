@@ -1,4 +1,7 @@
 import ply.yacc as yacc
+import compiler.compiler_ast as ast
+from compiler.lexer import *
+from compiler.exceptions import *
 
 disable_warnings = False
 
