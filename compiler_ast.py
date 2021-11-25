@@ -72,7 +72,7 @@ class Identifier(BaseExpression):
             symbols.set_func(self.name, val)
         else:
             symbols.set_sym(self.name, val)
-    
+   
     def eval(self):
         if self.is_function:
             return symbols.get_func(self.name)
@@ -88,7 +88,7 @@ class Assignment(BaseExpression):
     def __repr__(self):
         return '<Assignment sym={0}; val={1}>'.format(self.identifier, self.val)
 
-    
+  
     def eval(self):
         if self.identifier.is_function:
             self.identifier.assign(self.val)
@@ -190,3 +190,28 @@ class ForIn(BaseExpression):
             self.variable.assign(i)
             if isinstance(self.body.eval(), ExitStatement):
                 break
+
+
+class While(BaseExpression):
+    def __init__(self, condition, body):
+        self.condition = condition
+        self.body = body
+
+    def __repr__(self):
+        return '<While cond={0} body={1}>'.format(self.condition, self.body)
+
+    def eval(self):
+        while self.condition.eval():
+            if isinstance(self.body.eval(), ExitStatement):
+                break
+
+
+class PrintStatement(BaseExpression):
+    def __init__(self, items: InstructionList):
+        self.items = items
+
+    def __repr__(self):
+        return '<Print {0}>'.format(self.items)
+
+    def eval(self):
+        print(*self.items.eval(), end='', sep='')
