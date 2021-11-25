@@ -3,7 +3,6 @@ import compiler.compiler_ast
 import compiler.exceptions
 import sys
 
-
 def execute(source, show_ast: bool=False, disable_warnings: bool=True):
     p.disable_warnings = disable_warnings
 
