@@ -48,25 +48,21 @@ t_GTE = '>='
 t_LT = '<'
 t_LTE = '<='
 
-
 def t_NEWLINE(t):
     r'\n'
     t.lexer.lineno += 1
     t.lexer.linepos = 0
     pass
 
-
 def t_TRUE(t):
     'true'
     t.value = True
     return t
 
-
 def t_FALSE(t):
     'false'
     t.value = False
     return t
-
 
 def t_IDENTIFIER(t):
     r'[\$_a-zA-Z]\w*'
