@@ -88,6 +88,6 @@ def t_STRING(t):
     return t
 
 def t_error(t):
-    raise comp_final.exceptions.UnexpectedCharacter("Unexpected character '%s' at line %d" % (t.value[0], t.lineno))
+    raise compiler.exceptions.UnexpectedCharacter("Unexpected character '%s' at line %d" % (t.value[0], t.lineno))
 
 lexer = lex.lex()
