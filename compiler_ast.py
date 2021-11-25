@@ -32,11 +32,9 @@ class InstructionList:
 
         return ret
 
-
 class BaseExpression:
     def eval(self):
         raise NotImplementedError()
-
 
 class ExitStatement(BaseExpression):
     def __iter__(self):
@@ -45,8 +43,7 @@ class ExitStatement(BaseExpression):
     def eval(self):
         pass
 
-
-class Primitive(BaseExpression):
+    class Primitive(BaseExpression):
     def __init__(self, value):
         self.value = value
 
@@ -55,8 +52,6 @@ class Primitive(BaseExpression):
 
     def eval(self):
         return self.value
-
-
 
 class Identifier(BaseExpression):
     is_function = False
@@ -72,13 +67,12 @@ class Identifier(BaseExpression):
             symbols.set_func(self.name, val)
         else:
             symbols.set_sym(self.name, val)
-    # need
+ 
     def eval(self):
         if self.is_function:
             return symbols.get_func(self.name)
 
         return symbols.get_sym(self.name)
-
 
 class Assignment(BaseExpression):
     def __init__(self, identifier: Identifier, val):
@@ -87,14 +81,12 @@ class Assignment(BaseExpression):
 
     def __repr__(self):
         return '<Assignment sym={0}; val={1}>'.format(self.identifier, self.val)
-
-    # first call after finishing the enviroment file
+    
     def eval(self):
         if self.identifier.is_function:
             self.identifier.assign(self.val)
         else:
             self.identifier.assign(self.val.eval())
-
 
 class BinaryOperation(BaseExpression):
     __operations = {
@@ -117,7 +109,6 @@ class BinaryOperation(BaseExpression):
 
     }
     
-
     def __repr__(self):
         return '<BinaryOperation left ={0} right={1} operation="{2}">'.format(self.left, self.right, self.op)
 
@@ -159,7 +150,6 @@ class UnaryOperation(BaseExpression):
     def eval(self):
         return self.__operations[self.operation](self.expr.eval())
 
-
 class If(BaseExpression):
     def __init__(self, condition: BaseExpression, truepart: InstructionList, elsepart=None):
         self.condition = condition
@@ -174,7 +164,6 @@ class If(BaseExpression):
             return self.truepart.eval()
         elif self.elsepart is not None:
             return self.elsepart.eval()
-
 
 class ForIn(BaseExpression):
     def __init__(self, variable: Identifier, sequence: BaseExpression, body: InstructionList):
@@ -191,7 +180,6 @@ class ForIn(BaseExpression):
             if isinstance(self.body.eval(), ExitStatement):
                 break
 
-
 class While(BaseExpression):
     def __init__(self, condition, body):
         self.condition = condition
@@ -205,7 +193,6 @@ class While(BaseExpression):
             if isinstance(self.body.eval(), ExitStatement):
                 break
 
-
 class PrintStatement(BaseExpression):
     def __init__(self, items: InstructionList):
         self.items = items
@@ -215,7 +202,6 @@ class PrintStatement(BaseExpression):
 
     def eval(self):
         print(*self.items.eval(), end='', sep='')
-
 
 class FunctionCall(BaseExpression):
     def __init__(self, name: Identifier, params: InstructionList):
@@ -241,7 +227,6 @@ class FunctionCall(BaseExpression):
 
         return self.__eval_udf()
 
-
 class Function(BaseExpression):
     def __init__(self, params: InstructionList, body: InstructionList):
         self.params = params
@@ -264,7 +249,6 @@ class Function(BaseExpression):
             symbols.set_local(False)
 
         return None
-
 
 class BuiltInFunction(BaseExpression):
     def __init__(self, func):
