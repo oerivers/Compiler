@@ -31,3 +31,8 @@ class InstructionList:
                 ret.append(res)
 
         return ret
+
+
+class BaseExpression:
+    def eval(self):
+        raise NotImplementedError()
