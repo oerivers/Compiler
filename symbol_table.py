@@ -1,4 +1,4 @@
-from compiler.outlier import *
+from compiler.exceptions import *
 
 class SymbolTable:
     __func = 'functions'
