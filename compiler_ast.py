@@ -55,3 +55,27 @@ class Primitive(BaseExpression):
 
     def eval(self):
         return self.value
+
+
+
+class Identifier(BaseExpression):
+    is_function = False
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return '<Identifier {0}>'.format(self.name)
+
+    def assign(self, val):
+        if self.is_function:
+            symbols.set_func(self.name, val)
+        else:
+            symbols.set_sym(self.name, val)
+    # need
+    def eval(self):
+        if self.is_function:
+            return symbols.get_func(self.name)
+
+        return symbols.get_sym(self.name)
+
