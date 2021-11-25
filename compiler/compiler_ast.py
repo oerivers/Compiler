@@ -76,7 +76,7 @@ class Identifier(BaseExpression):
             symbols.set_func(self.name, val)
         else:
             symbols.set_sym(self.name, val)
-    # need
+    
     def eval(self):
         if self.is_function:
             return symbols.get_func(self.name)
@@ -92,7 +92,7 @@ class Assignment(BaseExpression):
     def __repr__(self):
         return '<Assignment sym={0}; val={1}>'.format(self.identifier, self.val)
 
-    # first call after finishing the enviroment file
+    
     def eval(self):
         if self.identifier.is_function:
             self.identifier.assign(self.val)
