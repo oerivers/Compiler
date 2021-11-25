@@ -3,7 +3,7 @@ from types import LambdaType
 from compiler.exceptions import *
 import compiler.symbol_table
 
-symbols = comp_final.symbol_table.SymbolTable()
+symbols = compiler.symbol_table.SymbolTable()
 
 
 class InstructionList:
