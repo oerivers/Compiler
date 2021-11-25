@@ -1,4 +1,5 @@
 import ply.lex as lex
+import compiler.exceptions
 
 reserved = {
     'if': 'IF',
@@ -74,18 +75,15 @@ def t_IDENTIFIER(t):
 
     return t
 
-
 def t_NUM_FLOAT(t):
     r'\d*\.\d+'
     t.value = float(t.value)
     return t
 
-
 def t_NUM_INT(t):
     r'\d+'
     t.value = int(t.value)
     return t
-
 
 def t_STRING(t):
     r'"(?:\\"|.)*?"'
@@ -93,9 +91,7 @@ def t_STRING(t):
     t.value = bytes(t.value.lstrip('"').rstrip('"'), "utf-8").decode("unicode_escape")
     return t
 
-
 def t_error(t):
     raise comp_final.exceptions.UnexpectedCharacter("Unexpected character '%s' at line %d" % (t.value[0], t.lineno))
-
 
 lexer = lex.lex()
